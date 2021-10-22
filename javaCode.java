@@ -25,13 +25,16 @@ public class MainActivity extends AppCompatActivity {
     private Button equal;
     private TextView info;
     private TextView result;
-    private final char Addition = '+';
+    private final char ADDITION = '+';
     private final char SUBTRACTION = '-';
     private final char MULTIPLICATION = '*';
     private final char DIVISION = '/';
+    private final char EQU = 0;
+
     private double val1 = Double.NaN;
     private double val2;
 
+    private char ACTION;
 
     @Override
 
@@ -103,9 +106,65 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            compute();
+            ACTION=ADDITION;
+            result.setText(String.valueOf(val1)+ "+");
+            info.setText(null);
             }
         });
+        sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compute();
+                ACTION=SUBTRACTION;
+                result.setText(String.valueOf(val1)+ "-");
+                info.setText(null);
+            }
+        });
+        multi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compute();
+                ACTION=MULTIPLICATION;
+                result.setText(String.valueOf(val1)+ "*");
+                info.setText(null);
+            }
+        });
+        divide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compute();
+                ACTION=DIVISION;
+                result.setText(String.valueOf(val1)+ "/");
+                info.setText(null);
+            }
+        });
+        equal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compute();
+                ACTION=EQU;
+                result.setText(result.getText().toString()+ String.valueOf(val2)+ "=" + String.valueOf(val1));
+                info.setText(null);
+            }
+        });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            if(info.getText().length() > 0){
+                CharSequence name = info.getText().toString();
+                info.setText(name.subSequence(0,name.length()-1));
+                }
+            else{
+                    val1=Double.NaN;
+                    val2=Double.NaN;
+                    info.setText(null);
+                    result.setText(null);
+                }
+            }
+        });
+
+
 
     }
 private void setUIViews(){
@@ -125,6 +184,31 @@ private void setUIViews(){
         divide = (Button)findViewById(R.id.btndvd);
         info = (TextView)findViewById(R.id.textViewControl);
         result = (TextView) findViewById(R.id.textViewDisplay);
+        equal = (Button)findViewById(R.id.btneql);
 }
+    private void compute(){
+        if (!Double.isNaN(val1)){
+            val2 = Double.parseDouble(info.getText().toString());
+            switch(ACTION){
+                case ADDITION:
+                    val1=val1+val2;
+                    break;
+                case SUBTRACTION:
+                    val1=val1-val2;
+                    break;
+                case MULTIPLICATION:
+                    val1=val1*val2;
+                    break;
+                case DIVISION:
+                    val1=val1/val2;
+                    break;
+                case EQU:
+                    break;
+            }
 
+        }
+        else{
+            val1 = Double.parseDouble(info.getText().toString());
+        }
+    }
 }
